@@ -2,161 +2,157 @@ import datetime
 import random
 import os
 
-
 if not os.path.exists("files"):
     os.makedirs("files")
 
-oyun_tahtasi = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-oyuncu_skor = 0
-bilgisayar_skor = 0
+board = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+player_score = 0
+computer_score = 0
 
 
-def oyun_tahtasi_goster():
-    print("\t " + oyun_tahtasi[1] + " | " + oyun_tahtasi[2] + " | " + oyun_tahtasi[3] + " ")
+def show_board():
+    print("\t " + board[1] + " | " + board[2] + " | " + board[3] + " ")
     print("\t-----------")
-    print("\t " + oyun_tahtasi[4] + " | " + oyun_tahtasi[5] + " | " + oyun_tahtasi[6] + " ")
+    print("\t " + board[4] + " | " + board[5] + " | " + board[6] + " ")
     print("\t-----------")
-    print("\t " + oyun_tahtasi[7] + " | " + oyun_tahtasi[8] + " | " + oyun_tahtasi[9] + " ")
+    print("\t " + board[7] + " | " + board[8] + " | " + board[9] + " ")
     print()
     print("###############")
     print()
 
 
-def oyuncu_kazandi_mi():
+def player_won():
     for i in range(1, 11, 3):
-        if oyun_tahtasi[i:i + 3] == ["X", "X", "X"]:
-            print("Oyuncu kazandı!")
+        if board[i:i + 3] == ["X", "X", "X"]:
+            print("Player won!")
             return True
     for i in range(1, 4):
-        if oyun_tahtasi[i:(i + 7):3] == ["X", "X", "X"]:
-            print("Oyuncu kazandı!")
+        if board[i:(i + 7):3] == ["X", "X", "X"]:
+            print("Player won!")
             return True
-    if (oyun_tahtasi[1] == oyun_tahtasi[5] == oyun_tahtasi[9] == "X") or \
-            (oyun_tahtasi[3] == oyun_tahtasi[5] == oyun_tahtasi[7] == "X"):
-        print("Oyuncu kazandı!")
+    if (board[1] == board[5] == board[9] == "X") or \
+       (board[3] == board[5] == board[7] == "X"):
+        print("Player won!")
         return True
     return False
 
 
-def bilgisayar_kazandi_mi():
+def computer_won():
     for i in range(1, 11, 3):
-        if oyun_tahtasi[i:i + 3] == ["O", "O", "O"]:
-            print("Bilgisayar kazandı!")
+        if board[i:i + 3] == ["O", "O", "O"]:
+            print("Computer won!")
             return True
     for i in range(1, 4):
-        if oyun_tahtasi[i:(i + 7):3] == ["O", "O", "O"]:
-            print("Bilgisayar kazandı!")
+        if board[i:(i + 7):3] == ["O", "O", "O"]:
+            print("Computer won!")
             return True
-    if (oyun_tahtasi[1] == oyun_tahtasi[5] == oyun_tahtasi[9] == "O") or \
-            (oyun_tahtasi[3] == oyun_tahtasi[5] == oyun_tahtasi[7] == "O"):
-        print("Bilgisayar kazandı!")
+    if (board[1] == board[5] == board[9] == "O") or \
+       (board[3] == board[5] == board[7] == "O"):
+        print("Computer won!")
         return True
     return False
 
 
+def block_player_win():
 
-
-def oyuncunun_kazanmasini_engelle():
-
-    if oyun_tahtasi[1:4].count("X") == 2:
+    if board[1:4].count("X") == 2:
         for i in range(1, 4):
-            if oyun_tahtasi[i] == str(i):
-                oyun_tahtasi[i] = "O"
+            if board[i] == str(i):
+                board[i] = "O"
                 return True
 
-    if oyun_tahtasi[4:7].count("X") == 2:
+    if board[4:7].count("X") == 2:
         for i in range(4, 7):
-            if oyun_tahtasi[i] == str(i):
-                oyun_tahtasi[i] = "O"
+            if board[i] == str(i):
+                board[i] = "O"
                 return True
 
-    if oyun_tahtasi[7:10].count("X") == 2:
+    if board[7:10].count("X") == 2:
         for i in range(7, 10):
-            if oyun_tahtasi[i] == str(i):
-                oyun_tahtasi[i] = "O"
+            if board[i] == str(i):
+                board[i] = "O"
                 return True
 
-
-    for liste in [[1, 4, 7], [2, 5, 8], [3, 6, 9]]:
-        if [oyun_tahtasi[i] for i in liste].count("X") == 2:
-            for i in liste:
-                if oyun_tahtasi[i] == str(i):
-                    oyun_tahtasi[i] = "O"
+    for line in [[1, 4, 7], [2, 5, 8], [3, 6, 9]]:
+        if [board[i] for i in line].count("X") == 2:
+            for i in line:
+                if board[i] == str(i):
+                    board[i] = "O"
                     return True
 
-
-    if [oyun_tahtasi[1], oyun_tahtasi[5], oyun_tahtasi[9]].count("X") == 2:
+    if [board[1], board[5], board[9]].count("X") == 2:
         for i in [1, 5, 9]:
-            if oyun_tahtasi[i] == str(i):
-                oyun_tahtasi[i] = "O"
+            if board[i] == str(i):
+                board[i] = "O"
                 return True
 
-
-    if [oyun_tahtasi[3], oyun_tahtasi[5], oyun_tahtasi[7]].count("X") == 2:
+    if [board[3], board[5], board[7]].count("X") == 2:
         for i in [3, 5, 7]:
-            if oyun_tahtasi[i] == str(i):
-                oyun_tahtasi[i] = "O"
+            if board[i] == str(i):
+                board[i] = "O"
                 return True
 
     return False
 
 
-def oyuncu_hamle():
+def player_move():
     while True:
-        secim = input("Bir sayı seçiniz (1-9):")
-        if secim not in oyun_tahtasi or secim == "":
-            print("Hatalı hamle, tekrar deneyin.")
+        choice = input("Choose a number (1-9): ")
+        if choice not in board or choice == "":
+            print("Invalid move, try again.")
             continue
-        secim_index = int(secim)
-        oyun_tahtasi[secim_index] = "X"
+        index = int(choice)
+        board[index] = "X"
         break
 
 
-def hamle_yapacak_yer_var_mi():
-    for i in range(1, len(oyun_tahtasi)):
-        if oyun_tahtasi[i] == str(i):
+def moves_left():
+    for i in range(1, len(board)):
+        if board[i] == str(i):
             return True
     return False
 
 
-def bilgisayar_hamlesi():
-    if oyuncunun_kazanmasini_engelle():
+def computer_move():
+    if block_player_win():
         return
-    while hamle_yapacak_yer_var_mi():
-        bilgisayar_secim_index = random.randint(1, 9)
-        if str(bilgisayar_secim_index) not in oyun_tahtasi:
+    while moves_left():
+        index = random.randint(1, 9)
+        if str(index) not in board:
             continue
-        oyun_tahtasi[bilgisayar_secim_index] = "O"
+        board[index] = "O"
         break
-
 
 
 while True:
-    oyun_tahtasi_goster()
-    oyuncu_hamle()
-    if oyuncu_kazandi_mi():
-        oyun_tahtasi_goster()
-        oyun_tahtasi = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-        oyuncu_skor += 1
-        secim = input("Çıkmak için X, devam etmek için herhangi bir tuşa basınız: ")
-        if secim.upper() == "X":
+    show_board()
+    player_move()
+
+    if player_won():
+        show_board()
+        board = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        player_score += 1
+        choice = input("Press X to exit, any key to continue: ")
+        if choice.upper() == "X":
             break
 
-    if not hamle_yapacak_yer_var_mi():
-        print("Hamle yapacak yer kalmadı! Durum berabere.")
-        oyun_tahtasi = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    if not moves_left():
+        print("No moves left! It's a draw.")
+        board = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         continue
 
-    bilgisayar_hamlesi()
-    if bilgisayar_kazandi_mi():
-        oyun_tahtasi_goster()
-        oyun_tahtasi = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-        bilgisayar_skor += 1
-        secim = input("Çıkmak için X, devam etmek için herhangi bir tuşa basınız: ")
-        if secim.upper() == "X":
+    computer_move()
+
+    if computer_won():
+        show_board()
+        board = ["", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        computer_score += 1
+        choice = input("Press X to exit, any key to continue: ")
+        if choice.upper() == "X":
             break
 
 
-print(f"Final Skoru -> Oyuncu: {oyuncu_skor} - Bilgisayar: {bilgisayar_skor}")
+print(f"Final Score -> Player: {player_score} - Computer: {computer_score}")
+
 with open("files/score.txt", "a") as f:
-    f.write(f"{datetime.datetime.now()} > Oyuncu: {oyuncu_skor} - Bilgisayar: {bilgisayar_skor}\n")
+    f.write(f"{datetime.datetime.now()} > Player: {player_score} - Computer: {computer_score}\n")
